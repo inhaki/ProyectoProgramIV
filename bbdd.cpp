@@ -79,7 +79,7 @@ class DBConnector{
 
 			result = sqlite3_step(stmt);
 			if (result != SQLITE_DONE) {
-				printf("Error inserting new data into country table\n");
+				printf("Error inserting new data into Trayecto table\n");
 				return result;
 			}
 
