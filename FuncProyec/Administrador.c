@@ -30,6 +30,7 @@ bool LoginAdmin()
 	fgets(str, MAX_LONG, stdin);
 	clear_if_needed(str);
 	sscanf(str, "%s", frmt_str);
+	//printf("%s\n",frmt_str);//hasta aquí va bien la impresión
 
 	printf("Introduzca su clave: ");
 	fgets(str, MAX_LONG, stdin);
@@ -38,27 +39,37 @@ bool LoginAdmin()
 
 	login=(char*)malloc((strlen(frmt_str)+strlen(frmt_str1)+1)* sizeof(char));//tamaño por valor de los dos strings + espacio
 
-	strcat(login, frmt_str);
-	strcat(login, espacio);//ya que los strings están separados en el fichero
+	strcpy(login, frmt_str);
+	printf("1 %s\n",login);//hasta aquí va bien
+	//strcat(login, espacio);//ya que los strings están separados en el fichero
+	//printf("2 %s\n",login);
 	strcat(login, frmt_str1);
-	printf("%s\n", login);
+	printf("3 %s\n", login);
 	l=strlen(login);
 
 	f=fopen("Admin.txt", "r");
-	while((c= fgetc(f)) != EOF)
+
+	while (fgets(str1, l+1, f))
+    {     
+      if((strcmp(str1,login))==0){
+		printf("Cuenta Aceptada.\n");
+		return true;
+      }
+    }
+	/*while((c= fgetc(f)) != EOF)
 	{
 		fgets(str1, l+1, f);
 		if((strcmp(str1,login))==0){
 			printf("Cuenta Aceptada.\n");
 			return true;
 		}
-	}
+	}*/
 	printf("\n");
 
 	fclose(f);
 
 	free(str1);
-	free(espacio);
+	free(espacio);//ya que no es un pointer, solo un elemento
 	free(login);
 
 	return false;
