@@ -3,9 +3,12 @@
 #include <stdbool.h>
 #include "FuncProyec/Cliente.h"
 
+<<<<<<< HEAD
 //Proyecto de Progrmación IV
 //Prueba
 
+=======
+>>>>>>> origin/master
 #include "FuncProyec/Administrador.h"
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas administrador
