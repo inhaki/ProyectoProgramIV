@@ -4,6 +4,7 @@
 #include "FuncProyec/Cliente.h"
 
 //Proyecto de Progrmación IV
+//Prueba
 
 #include "FuncProyec/Administrador.h"
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
