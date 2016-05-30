@@ -7,6 +7,10 @@
 
 using namespace std;
 
+
+//Para crear el Main de cpp  --> g++ MainProyecto.cpp Administrador.o Cliente.o -o Main
+// los .o ya están creados
+
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
 
