@@ -2,14 +2,12 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include "FuncProyec/Cliente.h"
+#include "FuncProyec/Administrador.h"
 
 <<<<<<< HEAD
-//Proyecto de Progrmación IV
-//Prueba
-
 =======
 >>>>>>> origin/master
-#include "FuncProyec/Administrador.h"
+
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
 
@@ -22,10 +20,14 @@ int main(){
 	char menu;//menu ppal
 	char menuc;//menu cliente
 	char menua;//menu admin
-	printf("Bienvenido a la web de AirPacMaze.\n");
+	cout << "Bienvenido a la web de AirPacMaze." << endl
 
 	do{
-		printf("1 para cliente. \n2 para administrador \ns para SALIR \nMarca aqui: ");
+		cout << "- 1 para cliente. "<< endl
+		cout <<"- 2 para administrador " << endl 
+		cout << "- (s) para SALIR "<< endl
+		cout << "Marca aqui: "
+		
 		scanf("%c", &menu);
 
 		clear();
