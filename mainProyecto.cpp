@@ -39,7 +39,7 @@ int main(){
 		clear();
 
 		switch(menu){
-			case '1': cout << "Estas dentro del menu cliente." << endl;
+			case '1': {cout << "Estas dentro del menu cliente." << endl;
 					  Client client[MAX_CLIENTE];//estructura de la clase Administrador.h
 					  int d=0;//para indicar que posicion se rellena
 						do{
@@ -70,9 +70,10 @@ int main(){
 							
 							}
 						}while(menuc!='r');
+					}
 				break;
 			case '2':	
-						if(LoginAdmin()==true){//hay que corregirlo, ponerlo a true
+						{if(LoginAdmin()==true){//hay que corregirlo, ponerlo a true
 							//corregir la concatenacion de strings, que coja los valores adecuados y no punteros
 							cout << "Estas dentro del menu administrador." << endl;
 							Admin admin[MAX_CUENTAS];//estructura de la clase Administrador.h
@@ -109,10 +110,13 @@ int main(){
 						else{
 							cout << "Usuario o clave desconocidos. " << endl;
 						}
+					}
 				break;
-			case 's': cout << "Ha decidido salir, se cierra la aplicacion." << endl;
+			case 's': {cout << "Ha decidido salir, se cierra la aplicacion." << endl;
+					}
 				break;
-			default: cout << "No es un caracter valido, vuelve a marcar. " << endl;
+			default: {cout << "No es un caracter valido, vuelve a marcar. " << endl;
+					}
 
 		}
 	}while(menu!='s');
