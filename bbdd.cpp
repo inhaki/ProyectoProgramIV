@@ -7,21 +7,12 @@ class DBConnector{
 	//clase de la bbdd
 
 	private:
-<<<<<<< HEAD
-		private sqlite3 *db = NULL;
-
-	public:
-
-		//metodo para insertar un nuevo trayecto
-		int insertNewFlight(int cod_V, std::string aero_Orig, std::string aero_Dest, int fecha, int hora_Sal, int hora_Lleg, float precio)
-=======
 		sqlite3 *db = NULL;
 
 	public:
 
 		//metodo para insertar un nuevo trayecto---poner precio a float??
 		int insertNewFlight(int cod_V, std::string aero_Orig, std::string aero_Dest, int fecha, int hora_Sal, int hora_Lleg, int precio)
->>>>>>> origin/master
 		{
 			sqlite3_stmt *stmt;
 
@@ -78,13 +69,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-<<<<<<< HEAD
-			//precio
-			result = sqlite3_bind_float(stmt, 7, precio);
-=======
 			//precio es float
 			result = sqlite3_bind_int(stmt, 7, precio);
->>>>>>> origin/master
 			if (result != SQLITE_OK) {
 				printf("Error binding parameters\n");
 				printf("%s\n", sqlite3_errmsg(db));
@@ -113,14 +99,6 @@ class DBConnector{
 		int insertNewPlane(int cod_A, std::string nom_compania, int asientos)
 		{
 			sqlite3_stmt *stmt;
-<<<<<<< HEAD
-			return SQLITE_OK;
-		}
-
-		//construcctor el dbFile es el parámtero que pasamos al llamar al método en el DBConnector
-		DBConnector(std::string dbFile) {
-			int result = sqlite3_open("PacMazeBD.sqlite", &db);
-=======
 			///nueva tabla de aviones
 			char sql[]= "insert into Avion (cod_A, nom_compania, asientos) values (?, ?, ?)";
 			int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL );
@@ -171,6 +149,167 @@ class DBConnector{
 			return SQLITE_OK;
 		}
 
+		//método para guardar las reservas de los clientes
+		int insertNewClientBooking(int cod_C, std::string NomC, std::string ApellidoC, int cod_V, std::string Clase, int Num_Tarjeta)
+		{
+			sqlite3_stmt *stmt;
+
+			char sql[]= "insert into ReservaCliente (cod_C, NomC, ApellidoC, cod_V, Clase, Num_Tarjeta) values (?, ?, ?, ?, ?, ?)";
+			int result = sqlite3_prepare_v2(db, sql, strlen(sql) + 1, &stmt, NULL );
+			if(result != SQLITE_OK){
+				printf("Error preparing statement (INSERT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			printf("SQL query prepared (INSERT)\n");
+
+			result = sqlite3_bind_int(stmt, 1, cod_C);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			//datos del cliente
+			result = sqlite3_bind_text(stmt, 2, NomC.c_str(), NomC.length(), SQLITE_STATIC);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			result = sqlite3_bind_text(stmt, 3, ApellidoC.c_str(), ApellidoC.length(), SQLITE_STATIC);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			
+			result = sqlite3_bind_int(stmt, 4, cod_V);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//clase bussiness, preferente o turista
+			result = sqlite3_bind_text(stmt, 5, Clase.c_str(), Clase.length(), SQLITE_STATIC);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+	
+			result = sqlite3_bind_int(stmt, 6, Num_Tarjeta);
+			if (result != SQLITE_OK) {
+				printf("Error binding parameters\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			
+
+			result = sqlite3_step(stmt);
+			if (result != SQLITE_DONE) {
+				printf("Error inserting new data into ReservaCliente table\n");
+				return result;
+			}
+
+			result = sqlite3_finalize(stmt);
+			if (result != SQLITE_OK) {
+				printf("Error finalizing statement (INSERT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+		printf("Prepared statement finalized (INSERT)\n");
+
+			return SQLITE_OK;
+		}
+
+		int deleteFlight(int cod_V){
+			sqlite3_stmt *stmt;	
+
+			printf("Cod_Vuelo que se borra: %d\n", cod_V);
+
+			char sql[] = "delete from Trayecto where cod_V='&cod_V'";//sentencia que queremos realizar
+
+			int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
+			//coge como parámetros el puntero a la base de datos;
+			//la sentencia; el -1, y &stmt(pasamos la direccion del puntero); y NULL
+			
+			if (result != SQLITE_OK) {
+				printf("Error preparing statement (DELETE)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//si todo ha ido bien se notifica
+			printf("SQL query prepared (DELETE)\n");
+
+			//y se ejecuta el statement 'stmt'
+			//sqlite3_step, el step ejecuta la consulta
+			result = sqlite3_step(stmt);
+			if (result != SQLITE_DONE) {
+				printf("Error deleting data\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//terminar con el statement
+			//si se produce el error se notifica y acaba la ejecución
+			result = sqlite3_finalize(stmt);
+			if (result != SQLITE_OK) {
+				printf("Error finalizing statement (DELETE)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			printf("Prepared statement finalized (DELETE)\n");
+
+			return SQLITE_OK;
+
+		}
+
+		int deletePlane(int cod_A){
+			sqlite3_stmt *stmt;	
+
+			printf("Cod_Avion que se borra: %d\n", cod_A);
+
+			char sql[] = "delete from Avion where cod_A='cod_A'";//sentencia que queremos realizar
+
+			int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
+			//coge como parámetros el puntero a la base de datos;
+			//la sentencia; el -1, y &stmt(pasamos la direccion del puntero); y NULL
+			
+			if (result != SQLITE_OK) {
+				printf("Error preparing statement (DELETE)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//si todo ha ido bien se notifica
+			printf("SQL query prepared (DELETE)\n");
+
+			//y se ejecuta el statement 'stmt'
+			//sqlite3_step, el step ejecuta la consulta
+			result = sqlite3_step(stmt);
+			if (result != SQLITE_DONE) {
+				printf("Error deleting data\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//terminar con el statement
+			//si se produce el error se notifica y acaba la ejecución
+			result = sqlite3_finalize(stmt);
+			if (result != SQLITE_OK) {
+				printf("Error finalizing statement (DELETE)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			printf("Prepared statement finalized (DELETE)\n");
+
+			return SQLITE_OK;
+
+		}
+
 		int showAllPlanes(){
 			sqlite3_stmt *stmt;
 
@@ -211,6 +350,97 @@ class DBConnector{
 			printf("Prepared statement finalized (SELECT)\n");
 
 			return SQLITE_OK;
+		}
+
+		int showAllBookings(){
+			sqlite3_stmt *stmt;
+
+			char sql[] = "select cod_C, NomC, ApellidoC, Clase, ReservaCliente.cod_V, fecha, aero_Orig, aero_Dest from Trayecto, ReservaCliente";
+			//char sql1[]= "select cod_V, fecha, aero_Orig, aero_Dest from Trayecto";
+			int result = sqlite3_prepare_v2(db, sql, -1, &stmt, NULL) ;
+			//result= sqlite3_prepare_v2(db, sql1, -1, &stmt, NULL); 
+			if (result != SQLITE_OK) {
+				printf("Error preparing statement (SELECT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+
+			/*if (result1 != SQLITE_OK) {
+				printf("Error preparing statement (SELECT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result1;
+			}*/
+
+			printf("SQL query prepared (SELECT)\n");
+
+			int cod_C;
+			int cod_V;
+			char NomC[100];
+			char ApellidoC[100];
+			char Clase[50];
+			char aero_Orig[100];
+			char aero_Dest[100];
+			int fecha;
+	
+
+			printf("\n");
+			printf("\n");
+			printf("Showing bookings:\n");
+			do {
+				result = sqlite3_step(stmt) ;
+				if (result == SQLITE_ROW) {
+					cod_C = sqlite3_column_int(stmt, 0);//coge la columna de id es la (0) en el ejemplo
+					strcpy(NomC, (char *) sqlite3_column_text(stmt, 1));//esta columna es la (1)
+					strcpy(ApellidoC, (char *) sqlite3_column_text(stmt, 2));
+					strcpy(Clase, (char*) sqlite3_column_text(stmt, 3));
+					cod_V = sqlite3_column_int(stmt, 4);//coge la columna de id es la (0) en el ejemplo
+					strcpy(aero_Orig, (char *) sqlite3_column_text(stmt, 1));//esta columna es la (1)
+					strcpy(aero_Dest, (char *) sqlite3_column_text(stmt, 2));
+					fecha= sqlite3_column_int(stmt, 3);
+					printf("Cod_Cliente: %d Nombre: %s Apellido: %s, Clase: %s Cod_Vuelo: %d Origen: %s Destino: %s, Fecha: %d \n", cod_C, NomC, ApellidoC, Clase, cod_V, aero_Orig, aero_Dest, fecha);
+				}
+			} while (result == SQLITE_ROW);
+
+			/*do{
+				result = sqlite3_step(stmt) ;
+				if (result == SQLITE_ROW) {
+					cod_V = sqlite3_column_int(stmt, 0);//coge la columna de id es la (0) en el ejemplo
+					strcpy(aero_Orig, (char *) sqlite3_column_text(stmt, 1));//esta columna es la (1)
+					strcpy(aero_Dest, (char *) sqlite3_column_text(stmt, 2));
+					fecha= sqlite3_column_int(stmt, 3);
+					printf("Cod_Vuelo: %d Origen: %s Destino: %s, Fecha: %d \n", cod_V, aero_Orig, aero_Dest, fecha);
+				}
+			} while (result == SQLITE_ROW);*/
+
+			result = sqlite3_finalize(stmt);
+			if (result != SQLITE_OK) {
+				printf("Error finalizing statement (SELECT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result;
+			}
+			//
+			/*do{
+				result = sqlite3_step(stmt1) ;
+				if (result == SQLITE_ROW) {
+					cod_V = sqlite3_column_int(stmt1, 0);//coge la columna de id es la (0) en el ejemplo
+					strcpy(aero_Orig, (char *) sqlite3_column_text(stmt1, 1));//esta columna es la (1)
+					strcpy(aero_Dest, (char *) sqlite3_column_text(stmt1, 2));
+					fecha= sqlite3_column_int(stmt, 3);
+					printf("Cod_Vuelo: %d Origen: %s Destino: %s, Fecha: %d \n", cod_V, aero_Orig, aero_Dest, fecha);
+				}
+			} while (result == SQLITE_ROW);
+
+			/*result1 = sqlite3_finalize(stmt1);
+			if (result1 != SQLITE_OK) {
+				printf("Error finalizing statement (SELECT)\n");
+				printf("%s\n", sqlite3_errmsg(db));
+				return result1;
+			}*/
+
+			printf("Prepared statement finalized (SELECT)\n");
+
+			return SQLITE_OK;
+
 		}
 
 		int showAllFlights(){
@@ -267,7 +497,6 @@ class DBConnector{
 		//construcctor el dbFile es el parámtero que pasamos al llamar al método en el DBConnector
 		DBConnector(std::string dbFile) {
 			int result = sqlite3_open("ProyectoBBDD.s3db", &db);
->>>>>>> origin/master
 			if (result != SQLITE_OK) {
 				printf("Error opening database\n");
 
@@ -282,9 +511,6 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 			}	
 		}
-<<<<<<< HEAD
-};
-=======
 };
 
 int main(){
@@ -295,17 +521,35 @@ int main(){
 
 	//UNA VEZ INTRODUCIDOS LOS DATOS, NO SE PUEDEN INTRODUCIR DE NUEVO LOS MISMOS
 
-	/*int result = dbConnector.insertNewPlane(100, "Aena", 50);
+	/*result = dbConnector.insertNewPlane(100, "Aena", 50);
 	if (result != SQLITE_OK) {
 		printf("Error inserting new data\n");
 		return result;
 	}*/
 
-	/*result= dbConnector.insertNewFlight(0002, "SS", "BCN", 1603, 1750, 1850, 150);
+	/*result= dbConnector.insertNewFlight(0001, "SS", "MAD", 2905, 1650, 1750, 120);
 	if (result != SQLITE_OK) {
 		printf("Error inserting new data\n");
 		return result;
 	}*/
+
+	/*result=dbConnector.insertNewClientBooking(1, "Inhaki", "Gavela", 100, "Bussiness", 45698121);
+	if (result != SQLITE_OK) {
+		printf("Error inserting new data\n");
+		return result;
+	}*/	
+
+	result = dbConnector.deleteFlight(1);
+	if (result != SQLITE_OK) {
+		printf("Error deleting all countries\n");
+		return result;
+	}
+
+	result= dbConnector.deletePlane(100);
+	if (result != SQLITE_OK) {
+		printf("Error deleting all countries\n");
+		return result;
+	}
 
 	result = dbConnector.showAllPlanes();
 	if (result != SQLITE_OK) {
@@ -319,6 +563,11 @@ int main(){
 		return result;
 	}
 
+	result= dbConnector.showAllBookings();
+	if (result != SQLITE_OK) {
+		printf("Error getting all bookings\n");
+		return result;
+	}
+
 	return 0;
 }
->>>>>>> origin/master
