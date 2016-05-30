@@ -11,7 +11,7 @@ using namespace std;
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
 
 void clear() {//para quitar de la entrada de caracteres el \n
-	while(getchar() != '\n');
+	while(getchar() != '\n'); // no se si esto sigue siendo lo mismo ya que eliminamos \n
 }
 
 int main(){
