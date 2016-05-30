@@ -1,12 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
+#include <iostream>
 #include "FuncProyec/Cliente.h"
 #include "FuncProyec/Administrador.h"
 
-<<<<<<< HEAD
-=======
->>>>>>> origin/master
+using namespace std;
 
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
@@ -20,25 +19,36 @@ int main(){
 	char menu;//menu ppal
 	char menuc;//menu cliente
 	char menua;//menu admin
-	cout << "Bienvenido a la web de AirPacMaze." << endl
+
+	cout << "Bienvenido a la web de AirPacMaze." << endl;
 
 	do{
-		cout << "- 1 para cliente. "<< endl
-		cout <<"- 2 para administrador " << endl 
-		cout << "- (s) para SALIR "<< endl
-		cout << "Marca aqui: "
-		
-		scanf("%c", &menu);
+		cout << "- 1 para cliente. "<< endl;
+		cout <<"- 2 para administrador " << endl;
+		cout << "- (s) para SALIR "<< endl;
+		cout << "Marca aqui: " ;
+
+		cin >> menu; // Esto no se como ponerlo
+
+		cout << endl;
 
 		clear();
 
 		switch(menu){
-			case '1': printf("Estas dentro del menu cliente.");
+			case '1': cout << "Estas dentro del menu cliente." << endl;
 					  Client client[MAX_CLIENTE];//estructura de la clase Administrador.h
 					  int d=0;//para indicar que posicion se rellena
 						do{
-							printf("Pulsa. \n1 para registrarse como usuario. \n2 para \n3 para \nr para REGRESAR \nMarca aqui: ");
-							scanf("%c", &menuc);
+							cout << "Pulsa. "<< endl;
+							cout << "1 para registrarse como usuario. " << endl;
+							cout << "2 para " << endl;
+							cout << "3 para " << endl;
+							cout << "r para REGRESAR " << endl;
+							cout << "Marca aqui: "; 
+
+							cin >> menuc;
+
+							cout << endl;
 
 							clear();
 							switch(menuc){
@@ -50,9 +60,9 @@ int main(){
 									break;
 								case '3':
 									break;
-								case 'r': printf("Has solicitado volver al inicio. \n");
+								case 'r': cout <<"Has solicitado volver al inicio. "<< endl;
 									break;
-								default: printf("No es un caracter valido, vuelve a marcar. \n");
+								default: cout << "No es un caracter valido, vuelve a marcar. " << endl;
 							
 							}
 						}while(menuc!='r');
@@ -60,12 +70,20 @@ int main(){
 			case '2':	
 						if(LoginAdmin()==true){//hay que corregirlo, ponerlo a true
 							//corregir la concatenacion de strings, que coja los valores adecuados y no punteros
-							printf("Estas dentro del menu administrador.");
+							cout << "Estas dentro del menu administrador." << endl;
 							Admin admin[MAX_CUENTAS];//estructura de la clase Administrador.h
 							int i=0;//para indicar que posicion se rellena
 							do{
-								printf("Pulsa. \n1 para crear una cuenta de administrador.\n2 para ver las cuentas del sistema.\n3 para \nr para REGRESAR \nMarca aqui: ");
-								scanf("%c", &menua);
+								cout << "Pulsa. " << endl;
+								cout << "1 para crear una cuenta de administrador. "<< endl;
+								cout << "2 para ver las cuentas del sistema. " << endl; 
+								cout << "3 para " << endl;
+								cout << "r para REGRESAR " << endl;
+								cout << "Marca aqui: ";
+
+								cin >> menua;
+
+								cout << endl;
 
 								clear();
 								switch(menua){
@@ -77,20 +95,20 @@ int main(){
 										break;
 									case '3': ImprimirClients(client);
 										break;
-									case 'r': printf("Has solicitado volver al inicio. \n");
+									case 'r': cout <<"Has solicitado volver al inicio." << endl;
 										break;
-									default: printf("No es un caracter valido, vuelve a marcar. \n");
+									default: cout << "No es un caracter valido, vuelve a marcar." << endl;
 
 								}	
 							}while(menua!='r');
 						}
 						else{
-							printf("Usuario o clave desconocidos. \n");
+							cout << "Usuario o clave desconocidos. " << endl;
 						}
 				break;
-			case 's': printf("Ha decidido salir, se cierra la aplicacion.");
+			case 's': cout << "Ha decidido salir, se cierra la aplicacion." << endl;
 				break;
-			default: printf("No es un caracter valido, vuelve a marcar. \n");
+			default: cout << "No es un caracter valido, vuelve a marcar. " << endl;
 
 		}
 	}while(menu!='s');
