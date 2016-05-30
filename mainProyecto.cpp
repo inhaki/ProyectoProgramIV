@@ -98,7 +98,7 @@ int main(){
 										break;
 									case '2': ImprimirAdmins(admin);
 										break;
-									case '3': ImprimirClients(client);
+									case '3': //ImprimirClients(client);
 										break;
 									case 'r': cout <<"Has solicitado volver al inicio." << endl;
 										break;
