@@ -14,7 +14,7 @@ using namespace std;
 // los .o ya están creados
 
 //para ejecutar con la BBDD
-//g++ mainProyecto.cpp bbdd.cpp Administrador.o Cliente.o sqlite3/sqlite3.o -o mainProyecto
+//g++ mainProyecto.cpp bbdd.cpp Administrador.o Cliente.o sqlite3/sqlite3.o Vuelo/Vuelo.cpp -o mainProyecto
 
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
