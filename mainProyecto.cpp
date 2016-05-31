@@ -4,12 +4,16 @@
 #include <iostream>
 #include "FuncProyec/Cliente.h"
 #include "FuncProyec/Administrador.h"
+#include "bbdd.cpp"
 
 using namespace std;
 
 
 //Para crear el Main de cpp  --> g++ MainProyecto.cpp Administrador.o Cliente.o -o Main
 // los .o ya están creados
+
+//para ejecutar con la BBDD
+//g++ mainProyecto.cpp bbdd.cpp Administrador.o Cliente.o sqlite3/sqlite3.o -o mainProyecto
 
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
@@ -23,6 +27,11 @@ int main(){
 	char menu;//menu ppal
 	char menuc;//menu cliente
 	char menua;//menu admin
+
+	//para la interacción con la bbdd
+	DBConnector dbConnector("ProyectoBBDD.s3db");
+
+	int result;
 
 	cout << "Bienvenido a la web de AirPacMaze." << endl;
 
@@ -45,7 +54,7 @@ int main(){
 						do{
 							cout << "Pulsa. "<< endl;
 							cout << "1 para registrarse como usuario. " << endl;
-							cout << "2 para " << endl;
+							cout << "2 para ver los itinerarios de vuelo disponibles." << endl;
 							cout << "3 para " << endl;
 							cout << "r para REGRESAR " << endl;
 							cout << "Marca aqui: "; 
@@ -60,7 +69,11 @@ int main(){
 								case '1': CrearcuentaC(&client [d]);
 									d++;
 									break;
-								case '2': 
+								case '2': result = dbConnector.showAllFlights();
+										if (result != SQLITE_OK) {
+											printf("Error getting all planes\n");
+											return result;
+										}
 									break;
 								case '3':
 									break;
@@ -98,7 +111,7 @@ int main(){
 										break;
 									case '2': ImprimirAdmins(admin);
 										break;
-									case '3': //ImprimirClients(client);
+									case '3': //ImprimirClients(client); Da error al llamar al metodo
 										break;
 									case 'r': cout <<"Has solicitado volver al inicio." << endl;
 										break;
