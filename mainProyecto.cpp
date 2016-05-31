@@ -55,7 +55,7 @@ int main(){
 							cout << "Pulsa. "<< endl;
 							cout << "1 para registrarse como usuario. " << endl;
 							cout << "2 para ver los itinerarios de vuelo disponibles." << endl;
-							cout << "3 para " << endl;
+							cout << "3 para ver los vuelos reservados" << endl;
 							cout << "r para REGRESAR " << endl;
 							cout << "Marca aqui: "; 
 
@@ -75,7 +75,13 @@ int main(){
 											return result;
 										}
 									break;
-								case '3':
+								case '3': int cod_C;
+										cout<<"Introduzca su codigo cliente: ";
+										cin>>cod_C;
+										cout<<endl;
+										cout<<"Codigo: "<<cod_C<<endl;
+										//enseñar al cliente los vuelos que ha resrvado en su historia
+
 									break;
 								case 'r': cout <<"Has solicitado volver al inicio. "<< endl;
 									break;
@@ -93,29 +99,51 @@ int main(){
 							int i=0;//para indicar que posicion se rellena
 							do{
 								cout << "Pulsa. " << endl;
-								cout << "1 para crear una cuenta de administrador. "<< endl;
-								cout << "2 para ver las cuentas del sistema. " << endl; 
-								cout << "3 para " << endl;
-								cout << "r para REGRESAR " << endl;
-								cout << "Marca aqui: ";
-
-								cin >> menua;
-
-								cout << endl;
-
-								clear();
-								switch(menua){
-
-									case '1': Crearcuenta(&admin [i]);
-										i++;
-										break;
-									case '2': ImprimirAdmins(admin);
-										break;
-									case '3': //ImprimirClients(client); Da error al llamar al metodo
-										break;
-									case 'r': cout <<"Has solicitado volver al inicio." << endl;
-										break;
-									default: cout << "No es un caracter valido, vuelve a marcar." << endl;
+			                    cout << "1 para crear una cuenta de administrador. "<< endl;
+			                    cout << "2 para ver las cuentas del sistema. " << endl;
+			                    cout << "3 para imprimir clientes" << endl;
+			                    cout << "4 para ver e introducir itinerarios" << endl;
+			                    cout << "5 para ver e introducir aviones" << endl;
+			                    cout << "6 para borrar Trayectos" << endl;
+			                    cout << "7 para borrar Aviones"<< endl;
+			                    cout << "r para REGRESAR " << endl;
+			                    cout << "Marca aqui: ";
+                    
+			                    cin >> menua;
+			                    
+			                    cout << endl;
+			                    
+			                    clear();
+			                    switch(menua){
+			                            
+			                        case '1': Crearcuenta(&admin [i]);
+			                            i++;
+			                            break;
+			                        case '2': ImprimirAdmins(admin);
+			                            break;
+			                        case '3': //ImprimirClients(client);
+			                            break;
+			                        case '4': //IntroducirTrayecto (también te los enseña)
+			                        		result = dbConnector.showAllFlights();
+										if (result != SQLITE_OK) {
+											printf("Error getting all planes\n");
+											return result;
+										}
+			                            break;
+			                        case '5': //Introducir y Ver vuelos
+			                        		result = dbConnector.showAllPlanes();
+											if (result != SQLITE_OK) {
+												printf("Error getting all planes\n");
+												return result;
+											}
+			                            break;
+			                        case '6': //Borrar trayectos
+			                            break;
+			                        case '7'://Borra aviones
+			                        	break;
+			                        case 'r': cout <<"Has solicitado volver al inicio." << endl;
+			                            break;
+			                        default: cout << "No es un caracter valido, vuelve a marcar." << endl;
 
 								}	
 							}while(menua!='r');
