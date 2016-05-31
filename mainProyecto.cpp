@@ -5,6 +5,7 @@
 #include "FuncProyec/Cliente.h"
 #include "FuncProyec/Administrador.h"
 #include "bbdd.cpp"
+#include "Vuelo/Vuelo.h"
 
 using namespace std;
 
@@ -27,6 +28,8 @@ int main(){
 	char menu;//menu ppal
 	char menuc;//menu cliente
 	char menua;//menu admin
+	Trayecto t;//instanciamos objetos de las clases vuelo para su posterior
+	Avion a;//así podemos llamar a métodos de la bbdd desde dentro de las clases .cpp
 
 	//para la interacción con la bbdd
 	DBConnector dbConnector("ProyectoBBDD.s3db");
@@ -97,6 +100,7 @@ int main(){
 							cout << "Estas dentro del menu administrador." << endl;
 							Admin admin[MAX_CUENTAS];//estructura de la clase Administrador.h
 							int i=0;//para indicar que posicion se rellena
+							char SiNo;
 							do{
 								cout << "Pulsa. " << endl;
 			                    cout << "1 para crear una cuenta de administrador. "<< endl;
@@ -124,17 +128,28 @@ int main(){
 			                        case '3': //ImprimirClients(client);
 			                            break;
 			                        case '4': //IntroducirTrayecto (también te los enseña)
-			                        		result = dbConnector.showAllFlights();
+			                        	cout<<"Se muestran los itinerarios actuales: "<<endl;
+			                        	result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
 											printf("Error getting all planes\n");
 											return result;
 										}
-			                            break;
+										cout<<"Desea anadir algun trayecto mas, S/N: ";
+										cin>>SiNo;
+										if(SiNo=='S'){//en ese caso se añade un nuevo trayecto
+											t.crearTrayecto();
+										}
+										break;
 			                        case '5': //Introducir y Ver vuelos
 			                        		result = dbConnector.showAllPlanes();
 											if (result != SQLITE_OK) {
 												printf("Error getting all planes\n");
 												return result;
+											}
+											cout<<"Desea registrar alguna aeronave mas, S/N: ";
+											cin>>SiNo;
+											if(SiNo=='S'){
+												a.anadirAvion();
 											}
 			                            break;
 			                        case '6': //Borrar trayectos
