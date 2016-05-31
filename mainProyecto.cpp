@@ -100,7 +100,9 @@ int main(){
 							cout << "Estas dentro del menu administrador." << endl;
 							Admin admin[MAX_CUENTAS];//estructura de la clase Administrador.h
 							int i=0;//para indicar que posicion se rellena
-							char SiNo;
+							char SiNo;//para dar la opcion de añadir filas a la base de datos
+							int cod_V;//para borrar un trayecto
+							int cod_A;//se usa para borrar los datos de un avión
 							do{
 								cout << "Pulsa. " << endl;
 			                    cout << "1 para crear una cuenta de administrador. "<< endl;
@@ -153,8 +155,32 @@ int main(){
 											}
 			                            break;
 			                        case '6': //Borrar trayectos
+			                        	result = dbConnector.showAllFlights();
+										if (result != SQLITE_OK) {
+											printf("Error getting all planes\n");
+											return result;
+										}
+										cout<<"Indique el cod_V del trayecto que desea borrar: ";
+			                        	cin>>cod_V;
+			                        	/*result = dbConnector.deleteFlight(cod_V);
+										if (result != SQLITE_OK) {
+											printf("Error deleting all flights\n");
+											return result;
+										}*///no funciona bien, el error esta en la clase de bbdd
 			                            break;
 			                        case '7'://Borra aviones
+			                        	result = dbConnector.showAllPlanes();
+										if (result != SQLITE_OK) {
+											printf("Error getting all planes\n");
+											return result;
+										}
+										cout<<"Indique el cod_A del avion que desea eliminar: ";
+			                        	cin>>cod_A;
+			                        	/*result= dbConnector.deletePlane(100);
+										if (result != SQLITE_OK) {
+											printf("Error deleting all planes\n");
+											return result;
+										}*///aun no funciona bien
 			                        	break;
 			                        case 'r': cout <<"Has solicitado volver al inicio." << endl;
 			                            break;
