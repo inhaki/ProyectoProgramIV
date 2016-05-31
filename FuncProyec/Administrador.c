@@ -115,7 +115,7 @@ void Crearcuenta(Admin *a){
     strcpy(a->clave, frmt_str);
     
     //guardar la nueva cuenta
-    fprintf(f, "\n%s %s", a->nombre, a->clave);
+    fprintf(f, "%s\n%s\n", a->nombre, a->clave);
     
     //cerrar fichero
     fclose(f);
