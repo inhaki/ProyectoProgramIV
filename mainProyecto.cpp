@@ -54,11 +54,14 @@ int main(){
 			case '1': {cout << "Estas dentro del menu cliente." << endl;
 					  Client client[MAX_CLIENTE];//estructura de la clase Administrador.h
 					  int d=0;//para indicar que posicion se rellena
+					  string origen;//para búsqueda de aeropuertos según parámetros
+					  string destino;
 						do{
 							cout << "Pulsa. "<< endl;
 							cout << "1 para registrarse como usuario. " << endl;
 							cout << "2 para ver los itinerarios de vuelo disponibles." << endl;
-							cout << "3 para ver los vuelos reservados" << endl;
+							cout << "3 para reservar u  vuelo segun el origen y destino deseados"<<endl;
+							cout << "4 para ver los vuelos reservados" << endl;
 							cout << "r para REGRESAR " << endl;
 							cout << "Marca aqui: "; 
 
@@ -78,7 +81,19 @@ int main(){
 											return result;
 										}
 									break;
-								case '3': int cod_C;
+								case '3':
+										cout<<"Introduzca el aeropuerto desde el que desea partir: ";
+										cin>>origen;
+										cout<<"Introduzca su destino: ";
+										cin>>destino;
+
+										result=dbConnector.showAllFlightsByAirPort(origen, destino);
+										if (result != SQLITE_OK) {
+											printf("Error getting all planes\n");
+											return result;
+										}										
+									break;
+								case '4': int cod_C;
 										cout<<"Introduzca su codigo cliente: ";
 										cin>>cod_C;
 										cout<<endl;
@@ -162,11 +177,11 @@ int main(){
 										}
 										cout<<"Indique el cod_V del trayecto que desea borrar: ";
 			                        	cin>>cod_V;
-			                        	/*result = dbConnector.deleteFlight(cod_V);
+			                        	result = dbConnector.deleteFlight(cod_V);
 										if (result != SQLITE_OK) {
 											printf("Error deleting all flights\n");
 											return result;
-										}*///no funciona bien, el error esta en la clase de bbdd
+										}//no funciona bien, el error esta en la clase de bbdd
 			                            break;
 			                        case '7'://Borra aviones
 			                        	result = dbConnector.showAllPlanes();
@@ -176,11 +191,11 @@ int main(){
 										}
 										cout<<"Indique el cod_A del avion que desea eliminar: ";
 			                        	cin>>cod_A;
-			                        	/*result= dbConnector.deletePlane(100);
+			                        	result= dbConnector.deletePlane(cod_A);
 										if (result != SQLITE_OK) {
 											printf("Error deleting all planes\n");
 											return result;
-										}*///aun no funciona bien
+										}
 			                        	break;
 			                        case 'r': cout <<"Has solicitado volver al inicio." << endl;
 			                            break;
