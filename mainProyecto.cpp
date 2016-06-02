@@ -87,7 +87,7 @@ int main(){
 									break;
 								case '2': result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
-											printf("Error getting all planes\n");
+											printf("Error imprimiendo todos los aviones\n");
 											return result;
 										}
 									break;
@@ -108,7 +108,7 @@ int main(){
 
 											result=dbConnector.showAllFlightsByAirPort(origen, destino);
 											if (result != SQLITE_OK) {
-												printf("Error getting all planes\n");
+												printf("Error imprimiendo todos los aviones\n");
 												return result;
 											}
 											 //comprbación existe cliente
@@ -126,7 +126,7 @@ int main(){
 												  
 												result=dbConnector.insertNewClientBooking(cod_C, nombre, apellido, cod_VueloC, claseAsiento, Cuenta);
 												if (result != SQLITE_OK) {
-													printf("Error inserting new data\n");
+													printf("Error anadiendo una nueva reserva\n");
 													return result;
 												}
 											}
@@ -144,7 +144,7 @@ int main(){
 										//enseñar al cliente los vuelos que ha resrvado en su historia
 										result=dbConnector.showBookingsFilteredClient(cod_C);
 										if (result != SQLITE_OK) {
-											printf("Error getting all bookings\n");
+											printf("Error imprimiendo todas las reservas\n");
 											return result;
 										}
 									break;
@@ -153,6 +153,7 @@ int main(){
 								default: cout << "No es un caracter valido, vuelve a marcar. " << endl;
 							
 							}
+						cout<<endl;
 						}while(menuc!='r');
 					}
 				break;
@@ -194,10 +195,9 @@ int main(){
 			                        case '3': ImprimirClients(client);
 			                            break;
 			                        case '4': //IntroducirTrayecto (también te los enseña)
-			                        	cout<<"Se muestran los itinerarios actuales: "<<endl;
 			                        	result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
-											printf("Error getting all planes\n");
+											printf("Error imprimiendo todos aviones\n");
 											return result;
 										}
 										cout<<"Desea anadir algun trayecto mas, S/N: ";
@@ -209,7 +209,7 @@ int main(){
 			                        case '5': //Introducir y Ver vuelos
 			                        		result = dbConnector.showAllPlanes();
 											if (result != SQLITE_OK) {
-												printf("Error getting all planes\n");
+												printf("Error imprimiendo todos aviones\n");
 												return result;
 											}
 											cout<<"Desea registrar alguna aeronave mas, S/N: ";
@@ -221,53 +221,54 @@ int main(){
 			                        case '6': //Borrar trayectos
 			                        	result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
-											printf("Error getting all flights\n");
+											printf("Error imprimiendo todos los vuelos programados\n");
 											return result;
 										}
 										cout<<"Indique el cod_V del trayecto que desea borrar: ";
 			                        	cin>>cod_V;
 			                        	result = dbConnector.deleteFlight(cod_V);
 										if (result != SQLITE_OK) {
-											printf("Error deleting all flights\n");
+											printf("Error borrando el trayecto\n");
 											return result;
 										}//no funciona bien, el error esta en la clase de bbdd
 			                            break;
 			                        case '7'://Borra aviones
 			                        	result = dbConnector.showAllPlanes();
 										if (result != SQLITE_OK) {
-											printf("Error getting all planes\n");
+											printf("Error imprimiendo todos los aviones\n");
 											return result;
 										}
 										cout<<"Indique el cod_A del avion que desea eliminar: ";
 			                        	cin>>cod_A;
 			                        	result= dbConnector.deletePlane(cod_A);
 										if (result != SQLITE_OK) {
-											printf("Error deleting all planes\n");
+											printf("Error borrando todos los aviones\n");
 											return result;
 										}
 			                        	break;
 			                        case '8':
 			                        	result = dbConnector.showAllBookings();
 										if (result != SQLITE_OK) {
-											printf("Error getting all bookings\n");
+											printf("Error imprimiendo todas las reservas\n");
 											return result;
 										}
 			                        	break;
 			                        case '9':
 			                        	result = dbConnector.deleteAllBookings();
 										if (result != SQLITE_OK) {
-											printf("Error deleting bookings\n");
+											printf("Error borrando todas las reservas\n");
 											return result;
 										}
 										else{
 											cout<<"Hemos reseteado la tabla ReservasClientes de la BBDD"<<endl;
-										}
-			                        	break;
+							         	}
+							         	break;
 			                        case 'r': cout <<"Has solicitado volver al inicio." << endl;
 			                            break;
 			                        default: cout << "No es un caracter valido, vuelve a marcar." << endl;
 
-								}	
+								}
+							cout<<endl;
 							}while(menua!='r');
 						}
 						else{
@@ -279,9 +280,9 @@ int main(){
 					}
 				break;
 			default: {cout << "No es un caracter valido, vuelve a marcar. " << endl;
-					}
-
-		}
+				}
+			}
+		cout<<endl;
 	}while(menu!='s');
 
 	return 0;

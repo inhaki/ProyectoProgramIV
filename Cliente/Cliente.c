@@ -100,7 +100,7 @@ void CrearcuentaC(Client *b){
     strcpy(b->apellido, frmt_str);
     
     /*EMAIL*/
-    printf("Introduzca su email(20carac.max): ");
+    printf("Introduzca su email, sin el dominio(20carac.max): ");
     fgets(str, MAX_EMAIL, stdin);
     clear_if_neededc(str);
     sscanf(str, "%s", frmt_mail);

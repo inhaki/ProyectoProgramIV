@@ -385,7 +385,7 @@ class DBConnector{
 
 			printf("\n");
 			printf("\n");
-			printf("Showing planes:\n");
+			printf("Imprimiendo los aviones registrados en la base de datos:\n\n");
 			do {
 				result = sqlite3_step(stmt) ;
 				if (result == SQLITE_ROW) {
@@ -402,8 +402,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-
-			printf("Prepared statement finalized (SELECT)\n");
+			printf("\n");
+			printf("Prepared statement finalized (SELECT)\n\n");
 
 			return SQLITE_OK;
 		}
@@ -437,7 +437,7 @@ class DBConnector{
 
 			printf("\n");
 			printf("\n");
-			printf("Showing bookings:\n");
+			printf("Imprimiendo todas las reservas:\n\n");
 			do {
 				result = sqlite3_step(stmt) ;
 				if (result == SQLITE_ROW) {
@@ -461,8 +461,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-
-			printf("Prepared statement finalized (SELECT)\n");
+			printf("\n");
+			printf("Prepared statement finalized (SELECT)\n\n");
 
 			return SQLITE_OK;
 
@@ -499,7 +499,7 @@ class DBConnector{
 
 			printf("\n");
 			printf("\n");
-			printf("Showing bookings:\n");
+			printf("Imprimiendo las reservas realizadas por ud:\n\n");
 			do {
 				result = sqlite3_step(stmt) ;
 				if (result == SQLITE_ROW) {
@@ -508,7 +508,7 @@ class DBConnector{
 					strcpy(ApellidoC, (char *) sqlite3_column_text(stmt, 2));
 					strcpy(Clase, (char*) sqlite3_column_text(stmt, 3));
 					cod_V = sqlite3_column_int(stmt, 4);//coge la columna de id es la (0) en el ejemplo
-					printf("Cod_Cliente: %d Nombre: %s Apellido: %s, Clase: %s Cod_Vuelo: %d \n", cod_C, NomC, ApellidoC, Clase, cod_V);
+					printf("Cod_Cliente: %d Nombre: %s Apellido: %s, Clase: %s Cod_Vuelo: %d\n", cod_C, NomC, ApellidoC, Clase, cod_V);
 				}
 			} while (result == SQLITE_ROW);
 
@@ -518,8 +518,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-
-			printf("Prepared statement finalized (SELECT)\n");
+			printf("\n");
+			printf("Prepared statement finalized (SELECT)\n\n");
 
 			return SQLITE_OK;
 
@@ -548,7 +548,7 @@ class DBConnector{
 
 			printf("\n");
 			printf("\n");
-			printf("Showing flights:\n");
+			printf("Imprimiendo todos los trayectos:\n\n");
 			do {
 				result = sqlite3_step(stmt) ;
 				if (result == SQLITE_ROW) {
@@ -569,8 +569,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-
-			printf("Prepared statement finalized (SELECT)\n");
+			printf("\n");
+			printf("Prepared statement finalized (SELECT)\n\n");
 
 			return SQLITE_OK;
 
@@ -615,7 +615,7 @@ class DBConnector{
 
 			printf("\n");
 			printf("\n");
-			printf("Showing flights filtered by AirPort:\n");
+			printf("Imprimiendo los itinerarios filtrados por aeropuerto:\n\n");
 			do {
 				result = sqlite3_step(stmt) ;
 				if (result == SQLITE_ROW) {
@@ -636,8 +636,8 @@ class DBConnector{
 				printf("%s\n", sqlite3_errmsg(db));
 				return result;
 			}
-
-			printf("Prepared statement finalized (SELECT)\n");
+			printf("\n");
+			printf("Prepared statement finalized (SELECT)\n\n");
 
 			return SQLITE_OK;
 
@@ -647,7 +647,7 @@ class DBConnector{
 		DBConnector(std::string dbFile) {
 			int result = sqlite3_open("ProyectoBBDD.s3db", &db);
 			if (result != SQLITE_OK) {
-				printf("Error opening database\n");
+				printf("Error abriendo la base de datos\n");
 
 			}
 		}
@@ -656,7 +656,7 @@ class DBConnector{
 		~DBConnector() {
 			int result = sqlite3_close(db);
 			if (result != SQLITE_OK) {
-				printf("Error opening database\n");
+				printf("Error abriendo la base de datos\n");
 				printf("%s\n", sqlite3_errmsg(db));
 			}	
 		}
