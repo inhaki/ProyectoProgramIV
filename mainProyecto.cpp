@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <iostream>
-#include "FuncProyec/Cliente.h"
-#include "FuncProyec/Administrador.h"
+#include "Cliente/Cliente.h"
+#include "Administrador/Administrador.h"
 #include "bbdd.cpp"
 #include "Vuelo/Vuelo.h"
 
@@ -18,6 +18,8 @@ using namespace std;
 
 #define MAX_CUENTAS 5 //número máximo de cuentas administrador
 #define MAX_CLIENTE 10 //número máximo de cuentas cliente
+
+void clear_if_needed(char *str);
 
 void clear() {//para quitar de la entrada de caracteres el \n
 	while(getchar() != '\n'); // no se si esto sigue siendo lo mismo ya que eliminamos \n
@@ -35,7 +37,10 @@ int main(){
 	DBConnector dbConnector("ProyectoBBDD.s3db");
 
 	int result;
-
+	Client client[MAX_CLIENTE];//estructura de la clase Administrador.h lo declaramos aquí para usarlo dentro de ambos swtiches
+	char nombre [15];//login cliente
+    char apellido [15];
+    char str [15];
 	cout << "Bienvenido a la web de AirPacMaze." << endl;
 
 	do{
@@ -52,15 +57,20 @@ int main(){
 
 		switch(menu){
 			case '1': {cout << "Estas dentro del menu cliente." << endl;
-					  Client client[MAX_CLIENTE];//estructura de la clase Administrador.h
+					 
 					  int d=0;//para indicar que posicion se rellena
 					  string origen;//para búsqueda de aeropuertos según parámetros
 					  string destino;
+					  int cod_VueloC, cod_C;
+					  int Cuenta;
+					  string claseAsiento;
+					  char reserva;
+
 						do{
 							cout << "Pulsa. "<< endl;
 							cout << "1 para registrarse como usuario. " << endl;
 							cout << "2 para ver los itinerarios de vuelo disponibles." << endl;
-							cout << "3 para reservar u  vuelo segun el origen y destino deseados"<<endl;
+							cout << "3 para reservar un vuelo segun el origen y destino deseados"<<endl;
 							cout << "4 para ver los vuelos reservados" << endl;
 							cout << "r para REGRESAR " << endl;
 							cout << "Marca aqui: "; 
@@ -82,24 +92,61 @@ int main(){
 										}
 									break;
 								case '3':
-										cout<<"Introduzca el aeropuerto desde el que desea partir: ";
-										cin>>origen;
-										cout<<"Introduzca su destino: ";
-										cin>>destino;
+										printf("Introduce nombre: ");
+										fgets(str, 15, stdin);
+										clear_if_needed(str);
+										sscanf(str, "%s", nombre);
+										printf("Introduce apellido: ");
+									    fgets(str, 15, stdin);
+									    clear_if_needed(str);
+									    sscanf(str, "%s", apellido);
+										if(LoginClien(nombre, apellido)==true){
+											cout<<"Introduzca el aeropuerto desde el que desea partir: ";
+											cin>>origen;
+											cout<<"Introduzca su destino: ";
+											cin>>destino;
 
-										result=dbConnector.showAllFlightsByAirPort(origen, destino);
-										if (result != SQLITE_OK) {
-											printf("Error getting all planes\n");
-											return result;
-										}										
+											result=dbConnector.showAllFlightsByAirPort(origen, destino);
+											if (result != SQLITE_OK) {
+												printf("Error getting all planes\n");
+												return result;
+											}
+											 //comprbación existe cliente
+											cout<<"Desea reservar algun vuelo? S/N: ";
+											cin>>reserva;
+											if(reserva=='S'){
+												cout<<"Introduzca el codigo del vuelo que quiere reservar: ";
+												cin>>cod_VueloC;
+												cout<<"Indique los 4 ultimos numeros de su DNI: ";
+												cin>>cod_C;
+												cout<<"Escriba en que clase le gustaria viajar: Bussiness/Turista/Prefrente: ";
+												cin>>claseAsiento;
+												cout<<"Por ultimo facilitenos su cuenta bancaria: ";
+												cin>>Cuenta;
+												  
+												result=dbConnector.insertNewClientBooking(cod_C, nombre, apellido, cod_VueloC, claseAsiento, Cuenta);
+												if (result != SQLITE_OK) {
+													printf("Error inserting new data\n");
+													return result;
+												}
+											}
+											else{
+												cout<<"Vuelva a repetir el proceso si quiere comprar algun vuelo"<<endl;
+											}
+										}
+										else{
+											cout<<"Su cuenta cliente no esta registrada."<<endl;
+										} //no existe el cliente, no puede reservar vuelos									
 									break;
-								case '4': int cod_C;
-										cout<<"Introduzca su codigo cliente: ";
+								case '4':
+										cout<<"Introduzca su codigo cliente(los 4 ultimos numeros del DNI: ";
 										cin>>cod_C;
-										cout<<endl;
-										cout<<"Codigo: "<<cod_C<<endl;
 										//enseñar al cliente los vuelos que ha resrvado en su historia
-
+										result=dbConnector.showBookingsFilteredClient(cod_C);
+										if (result != SQLITE_OK) {
+											printf("Error getting all bookings\n");
+											return result;
+										}
 									break;
 								case 'r': cout <<"Has solicitado volver al inicio. "<< endl;
 									break;
@@ -127,6 +174,8 @@ int main(){
 			                    cout << "5 para ver e introducir aviones" << endl;
 			                    cout << "6 para borrar Trayectos" << endl;
 			                    cout << "7 para borrar Aviones"<< endl;
+			                    cout << "8 para ver todos los vuelos reservados por clientes"<<endl;
+			                    cout << "9 para resetear la base de datos de reservas"<<endl;
 			                    cout << "r para REGRESAR " << endl;
 			                    cout << "Marca aqui: ";
                     
@@ -142,7 +191,7 @@ int main(){
 			                            break;
 			                        case '2': ImprimirAdmins(admin);
 			                            break;
-			                        case '3': //ImprimirClients(client);
+			                        case '3': ImprimirClients(client);
 			                            break;
 			                        case '4': //IntroducirTrayecto (también te los enseña)
 			                        	cout<<"Se muestran los itinerarios actuales: "<<endl;
@@ -172,7 +221,7 @@ int main(){
 			                        case '6': //Borrar trayectos
 			                        	result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
-											printf("Error getting all planes\n");
+											printf("Error getting all flights\n");
 											return result;
 										}
 										cout<<"Indique el cod_V del trayecto que desea borrar: ";
@@ -197,6 +246,23 @@ int main(){
 											return result;
 										}
 			                        	break;
+			                        case '8':
+			                        	result = dbConnector.showAllBookings();
+										if (result != SQLITE_OK) {
+											printf("Error getting all bookings\n");
+											return result;
+										}
+			                        	break;
+			                        case '9':
+			                        	result = dbConnector.deleteAllBookings();
+										if (result != SQLITE_OK) {
+											printf("Error deleting bookings\n");
+											return result;
+										}
+										else{
+											cout<<"Hemos reseteado la tabla ReservasClientes de la BBDD"<<endl;
+										}
+			                        	break;
 			                        case 'r': cout <<"Has solicitado volver al inicio." << endl;
 			                            break;
 			                        default: cout << "No es un caracter valido, vuelve a marcar." << endl;
@@ -219,4 +285,13 @@ int main(){
 	}while(menu!='s');
 
 	return 0;
+}
+
+void clear_if_needed(char *str)
+{
+	if (str[strlen(str) - 1] != '\n')
+	{
+		int c;    
+    	while ( (c = getchar()) != EOF && c != '\n');
+    }
 }
