@@ -156,6 +156,77 @@ void ImprimirClients(Client b[]){
 	fclose(f);
 }
 
+//metodo de borrado de clientes
+bool EliminarClien()
+{
+    
+    FILE* f;
+    FILE*f1;
+    char linea [100];
+    
+    char str [15];
+    char frmt_str [15];
+    char frmt_str1 [15];
+    
+    printf("Introduce dni del cliente que desea borrar: ");
+    fgets(str, 15, stdin);
+    sscanf(str, "%s", frmt_str);
+    char comparadorchar[15];
+    
+    char nombre[15];
+    char apellido[15];
+    char correo[15];
+    int dni;
+    char ciudad[15];
+    
+    //abrir fichero para lectura
+    f = fopen("Client.txt", "r");
+    f1 = fopen("Temporal.txt","a");
+    
+    int control =1;
+    int borrar =0;
+    
+    while (fgets(linea,100,f))
+    { 
+        sscanf(linea,"%s",nombre);
+        fgets(linea,100,f);
+        //sscanf(linea,"%s",comparadorchar1);
+        sscanf(linea,"%s",apellido);
+        //control1 = strcmp(comparadorchar1,frmt_str1);
+        fgets(linea,100,f);
+        sscanf(linea,"%s",correo);
+        
+        fgets(linea,100,f);
+        sscanf(linea,"%d",&dni);
+        sscanf(linea,"%s",comparadorchar);
+        control = strcmp(comparadorchar,frmt_str);
+        fgets(linea,100,f);
+        sscanf(linea,"%s",ciudad);
+        
+        if (control != 0){
+           fprintf(f1, "%s\n%s\n%s\n%d\n%s\n", nombre, apellido, correo, dni, ciudad); 
+        }
+        
+        if (control ==0){
+            
+             borrar =1;            
+        }
+    }
+    fclose(f);
+    remove("Client.txt");
+    fclose(f1);
+    rename("Temporal.txt","Client.txt");
+    
+    if (borrar ==1){
+       printf("\nHA SIDO BORRADO CORRECTAMENTE\n");
+    }
+    
+    if (borrar ==0){
+        printf("NO HAY CLIENTES CON ESE DNI\n");
+    }
+    return false;
+}
+
 /**
 	Esta funcion elimina los caracteres pendientes si es necesario
 	Se usa junto con fgets para leer la entrada hasta cierta longitud

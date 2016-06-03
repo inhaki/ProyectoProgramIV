@@ -19,6 +19,8 @@ bool LoginClien(char* nombre, char* apellido);
 
 void CrearcuentaC(Client *b);
 
+bool EliminarClien();
+
 void ImprimirClients(Client b[]);
 
 #ifdef __cplusplus
