@@ -171,7 +171,6 @@ int main(){
 			                    cout << "1 para crear una cuenta de administrador. "<< endl;
 			                    cout << "2 para ver las cuentas del sistema. " << endl;
 			                    cout << "3 para imprimir clientes" << endl;
-			                    cout << "b para borrar una cuenta de clientes"<<endl;
 			                    cout << "4 para ver e introducir itinerarios" << endl;
 			                    cout << "5 para ver e introducir aviones" << endl;
 			                    cout << "6 para borrar Trayectos" << endl;
@@ -195,8 +194,6 @@ int main(){
 			                            break;
 			                        case '3': ImprimirClients(client);
 			                            break;
-			                        case 'b': EliminarClien();
-			                        	break;
 			                        case '4': //IntroducirTrayecto (también te los enseña)
 			                        	result = dbConnector.showAllFlights();
 										if (result != SQLITE_OK) {
